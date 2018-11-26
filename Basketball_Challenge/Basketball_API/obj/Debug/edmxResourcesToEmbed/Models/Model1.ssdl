@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Basketball_DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Games">
+    <Key>
+      <PropertyRef Name="GameNo" />
+    </Key>
+    <Property Name="GameNo" Type="int" Nullable="false" />
+    <Property Name="GameTime" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="GameDate" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="GameVenue" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="CourtFees" Type="money" />
+    <Property Name="WhoPaid" Type="int" />
+  </EntityType>
+  <EntityType Name="Players">
+    <Key>
+      <PropertyRef Name="PlayerNumber" />
+    </Key>
+    <Property Name="PlayerNumber" Type="int" Nullable="false" />
+    <Property Name="PlayerFname" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="PlayerLname" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_WhoPaid">
+    <End Role="Players" Type="Self.Players" Multiplicity="0..1" />
+    <End Role="Games" Type="Self.Games" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Players">
+        <PropertyRef Name="PlayerNumber" />
+      </Principal>
+      <Dependent Role="Games">
+        <PropertyRef Name="WhoPaid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Basketball_DatabaseModelStoreContainer">
+    <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Players" EntityType="Self.Players" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_WhoPaid" Association="Self.FK_WhoPaid">
+      <End Role="Players" EntitySet="Players" />
+      <End Role="Games" EntitySet="Games" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
